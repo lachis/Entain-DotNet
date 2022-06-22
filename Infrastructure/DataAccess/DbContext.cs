@@ -7,11 +7,11 @@ namespace Racing.Infrastructure.DataAccess;
 /// <inheritdoc />
 public sealed class DbContext : IDbContext
 {
-    private readonly string _connectionString;
     private readonly IList<SqliteConnection> _connectionList = new List<SqliteConnection>();
+    private readonly string _connectionString;
 
     /// <summary>
-    /// Initialise a new DbContext. Configure DI to call this
+    ///     Initialise a new DbContext. Configure DI to call this
     /// </summary>
     /// <param name="connectionString">The connection string to the database</param>
     public DbContext(string connectionString)
@@ -58,7 +58,9 @@ public sealed class DbContext : IDbContext
                                                              RandomNumber.Next(0,
                                                                                1)));
             insertCommand.Parameters.Add(new SqliteParameter("$time",
-                                                             DateTime.Now.Add(new TimeSpan(i, i, i))));
+                                                             DateTime.Now.Add(new TimeSpan(i,
+                                                                                           i,
+                                                                                           i))));
 
             insertCommand.ExecuteScalar();
         }
@@ -81,7 +83,7 @@ public sealed class DbContext : IDbContext
     }
 
     /// <summary>
-    /// Dispose the context and inner connections to ensure no connections are left open
+    ///     Dispose the context and inner connections to ensure no connections are left open
     /// </summary>
     public void Dispose()
     {

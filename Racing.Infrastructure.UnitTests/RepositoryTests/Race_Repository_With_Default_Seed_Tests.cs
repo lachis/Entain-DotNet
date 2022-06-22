@@ -23,7 +23,8 @@ public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFi
         var races = raceRepository.List(new ListRacesRequestFilter());
 
         // assert
-        Assert.Equal(100, races.Count);
+        Assert.Equal(100,
+                     races.Count);
     }
 
     [Fact]
@@ -33,7 +34,7 @@ public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFi
         var raceRepository = new RaceRepository(Fixture.DbContext);
 
         // act
-        var races = raceRepository.List(new ListRacesRequestFilter()
+        var races = raceRepository.List(new ListRacesRequestFilter
                                         {
                                             MeetingIds =
                                             {
@@ -42,6 +43,7 @@ public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFi
                                         });
 
         // assert
-        Assert.Equal(100, races.Count);
+        Assert.Equal(100,
+                     races.Count);
     }
 }

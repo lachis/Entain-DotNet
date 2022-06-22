@@ -26,7 +26,7 @@ public class RaceRepository : IRaceRepository, IDisposable
         using var conn = _context.NewConnection();
 
         var (sb, sqlParams) = ApplyFilter(new(Query.For_SelectRaces()),
-                    filter);
+                                          filter);
 
         conn.Open();
         var cmd = conn.CreateCommand();
@@ -49,15 +49,14 @@ public class RaceRepository : IRaceRepository, IDisposable
 
             var ts = Timestamp.FromDateTime(advertisedStart);
 
-            var race = new Race()
+            var race = new Race
                        {
                            AdvertisedStartTime = ts,
                            Id = id,
                            Name = name,
                            Number = number,
                            Visible = visible,
-                           MeetingId = meetingId   
-
+                           MeetingId = meetingId
                        };
 
             races.Add(race);
@@ -67,6 +66,12 @@ public class RaceRepository : IRaceRepository, IDisposable
         return races.AsReadOnly();
     }
 
+    /// <summary>
+    ///     Maps the filter object properties to the SQL equivalant and appends them to the StringBuilder as Where clauses
+    /// </summary>
+    /// <param name="query">The query as a StringBuilder object</param>
+    /// <param name="filter">The filter request</param>
+    /// <returns>The updated query and any parameters associated with the query</returns>
     private (StringBuilder query, List<SqliteParameter> sqlParams) ApplyFilter(StringBuilder query, ListRacesRequestFilter filter)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract

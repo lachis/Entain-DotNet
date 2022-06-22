@@ -3,7 +3,8 @@
 public static class Query
 {
     public static string For_SelectRaces()
-        => @"
+    {
+        return @"
   SELECT 
 				id, 
 				meeting_id, 
@@ -12,4 +13,5 @@ public static class Query
 				visible, 
 				advertised_start_time 
 			FROM races";
+    }
 }

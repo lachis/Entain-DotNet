@@ -5,7 +5,7 @@ using Racing.Infrastructure.UnitTests.Contexts;
 
 namespace Racing.Infrastructure.UnitTests.RepositoryTests;
 
-public class Race_Repository_MeetingId_Filtering_Tests: IClassFixture<Race_Repository_MeetingId_Filtering_Tests.TestDbFixture>
+public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repository_MeetingId_Filtering_Tests.TestDbFixture>
 {
     public TestDbFixture Fixture { get; }
 
@@ -27,7 +27,8 @@ public class Race_Repository_MeetingId_Filtering_Tests: IClassFixture<Race_Repos
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(50, races.Count);
+        Assert.Equal(50,
+                     races.Count);
     }
 
     [Fact]
@@ -43,24 +44,27 @@ public class Race_Repository_MeetingId_Filtering_Tests: IClassFixture<Race_Repos
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(50, races.Count);
+        Assert.Equal(50,
+                     races.Count);
     }
 
     public class TestDbFixture : IDisposable
     {
+        public TestDbContext DbContext { get; }
 
         public TestDbFixture()
         {
             DbContext = new TestDbContext();
         }
 
-        public TestDbContext DbContext { get; }
-
-        public SqliteConnection GetConnection() => DbContext.NewConnection();
-
         public void Dispose()
         {
             DbContext.Dispose();
+        }
+
+        public SqliteConnection GetConnection()
+        {
+            return DbContext.NewConnection();
         }
     }
 
@@ -86,14 +90,16 @@ public class Race_Repository_MeetingId_Filtering_Tests: IClassFixture<Race_Repos
 
                 if (i < 50)
                 {
-                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid", 1));
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     1));
                 }
                 else
                 {
-                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid", 2));
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     2));
                 }
 
-              
+
                 insertCommand.Parameters.Add(new SqliteParameter("$name",
                                                                  Name.Last()));
                 insertCommand.Parameters.Add(new SqliteParameter("$number",
@@ -103,7 +109,9 @@ public class Race_Repository_MeetingId_Filtering_Tests: IClassFixture<Race_Repos
                                                                  RandomNumber.Next(0,
                                                                                    1)));
                 insertCommand.Parameters.Add(new SqliteParameter("$time",
-                                                                 DateTime.Now.Add(new TimeSpan(i, i, i))));
+                                                                 DateTime.Now.Add(new TimeSpan(i,
+                                                                                               i,
+                                                                                               i))));
 
                 insertCommand.ExecuteScalar();
             }
