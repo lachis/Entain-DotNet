@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.6" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <Protobuf Include="..\Proto\racing.proto" GrpcServices="Server" Link="Protos\racing.proto" />
+  </ItemGroup>
+
+</Project>
