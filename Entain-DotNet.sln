@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proto", "Proto", "{74F220F3-EAF2-417B-B4A9-511755475536}"
 	ProjectSection(SolutionItems) = preProject
 		Proto\api-racing.proto = Proto\api-racing.proto
-		racing.proto = racing.proto
+		Proto\racing.proto = Proto\racing.proto
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "google", "google", "{BA25DA23-BC93-49ED-9B4D-3AF957FB9A1B}"
