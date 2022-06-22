@@ -1,5 +1,8 @@
 //using Racing.Services;
 
+using Infrastructure.Contracts;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Racing.Infrastructure.DataAccess;
 using Racing.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+builder.Services.AddScoped<IDbContext, DbContext>(ctx => new DbContext("Data Source=racing.db"));
+builder.Services.AddScoped<IRaceRepository, RaceRepository>();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+    dbContext.Seed();
+}
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<RacingService>();
