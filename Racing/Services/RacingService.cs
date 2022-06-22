@@ -1,4 +1,3 @@
-using Google.Protobuf.Collections;
 using Grpc.Core;
 using Infrastructure.Contracts;
 
@@ -25,8 +24,5 @@ public class RacingService : Racing.RacingBase
                                        response.ToArray()
                                    }
                                });
-        //return Task.FromResult(new ListRacesResponse() /*{ Message = "Hello " + request.Name })*/;
-        //return new ListRacesResponse();
-        
     }
 }
