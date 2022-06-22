@@ -48,6 +48,24 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
                      races.Count);
     }
 
+    [Fact]
+    public void Filter_MeetingIds_1_2_Returns_All_Races()
+    {
+        // arrange
+        Fixture.DbContext.Seed();
+        var raceRepository = new RaceRepository(Fixture.DbContext);
+
+        // act
+        var listRacesRequestFilter = new ListRacesRequestFilter();
+        listRacesRequestFilter.MeetingIds.Add(1);
+        listRacesRequestFilter.MeetingIds.Add(2);
+        var races = raceRepository.List(listRacesRequestFilter);
+
+        // assert
+        Assert.Equal(100,
+                     races.Count);
+    }
+
     public class TestDbFixture : IDisposable
     {
         public TestDbContext DbContext { get; }

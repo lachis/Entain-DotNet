@@ -72,7 +72,7 @@ public class RaceRepository : IRaceRepository, IDisposable
     /// <param name="query">The query as a StringBuilder object</param>
     /// <param name="filter">The filter request</param>
     /// <returns>The updated query and any parameters associated with the query</returns>
-    private (StringBuilder query, List<SqliteParameter> sqlParams) ApplyFilter(StringBuilder query, ListRacesRequestFilter filter)
+    private static (StringBuilder query, List<SqliteParameter> sqlParams) ApplyFilter(StringBuilder query, ListRacesRequestFilter filter)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (filter == null)
