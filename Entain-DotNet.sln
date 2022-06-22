@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Racing", "Racing\Racing.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proto", "Proto", "{74F220F3-EAF2-417B-B4A9-511755475536}"
 	ProjectSection(SolutionItems) = preProject
+		Proto\api-racing.proto = Proto\api-racing.proto
 		racing.proto = racing.proto
 	EndProjectSection
 EndProject
@@ -16,7 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Racing.Infrastructure", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Racing.Infrastructure.UnitTests", "Racing.Infrastructure.UnitTests\Racing.Infrastructure.UnitTests.csproj", "{08A501F3-196A-4624-B7FA-38EF85682978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Contracts", "Infrastructure.Contracts\Infrastructure.Contracts.csproj", "{40CD40DD-C45E-4137-ACAD-3D40A476996E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Contracts", "Infrastructure.Contracts\Infrastructure.Contracts.csproj", "{40CD40DD-C45E-4137-ACAD-3D40A476996E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "google", "google", "{BA25DA23-BC93-49ED-9B4D-3AF957FB9A1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{06258877-2CC9-4E6E-8B60-55772DD42B6A}"
+	ProjectSection(SolutionItems) = preProject
+		Proto\google\api\annotations.proto = Proto\google\api\annotations.proto
+		Proto\google\api\http.proto = Proto\google\api\http.proto
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +56,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BA25DA23-BC93-49ED-9B4D-3AF957FB9A1B} = {74F220F3-EAF2-417B-B4A9-511755475536}
+		{06258877-2CC9-4E6E-8B60-55772DD42B6A} = {BA25DA23-BC93-49ED-9B4D-3AF957FB9A1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25B56838-8E0D-4BC5-BD85-4DFEACB9FE31}
