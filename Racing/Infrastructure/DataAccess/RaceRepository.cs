@@ -95,6 +95,12 @@ public class RaceRepository : IRaceRepository, IDisposable
             clauses.Add($"meeting_id IN ({string.Join(", ", paramNames)})");
         }
 
+        // get races that are visible = true
+        if (filter.OnlyVisibleRaces)
+        {
+            clauses.Add("visible = 1");
+        }
+
         if (clauses.Count > 0)
         {
             query.Append($" WHERE {string.Join(" AND ", clauses)}");

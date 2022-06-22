@@ -40,7 +40,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.OnlyVisibleRaces = true;
+        listRacesRequestFilter.OnlyVisibleRaces = false;
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
@@ -49,7 +49,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
     }
 
     [Fact]
-    public void Filter_MeetingId_1_Only_Visible_Races_Returns_25_Races()
+    public void Filter_MeetingId_1_Only_Visible_Races_Returns_24_Races()
     {
         // arrange
         Fixture.DbContext.Seed();
@@ -62,7 +62,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(25,
+        Assert.Equal(24,
                      races.Count);
     }
 
@@ -80,7 +80,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(25,
+        Assert.Equal(50,
                      races.Count);
     }
 
@@ -104,7 +104,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
     }
 
     [Fact]
-    public void Filter_MeetingIds_1_2_Only_Visible_Races_False_Returns_50_Races()
+    public void Filter_MeetingIds_1_2_Only_Visible_Races_False_Returns_100_Races()
     {
         // arrange
         Fixture.DbContext.Seed();
@@ -118,7 +118,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(50,
+        Assert.Equal(100,
                      races.Count);
     }
 
@@ -198,12 +198,12 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
                                                                  RandomNumber.Next(1,
                                                                                    12)));
 
-                if (i < 25)
+                if (i <= 25)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$visible",
                                                                      value: 0));
                 }
-                else if (i is > 25 and < 50 or > 50 and < 75)
+                else if (i is > 25 and <= 50 or > 50 and <= 75)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$visible",
                                                                      value: 1));
