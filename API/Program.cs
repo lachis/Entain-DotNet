@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc()
        .AddJsonTranscoding();
 
-builder.Services.AddGrpcClient<Racing.Racing.RacingClient>(o => o.Address = new Uri("http://localhost:9006"));
+builder.Services.AddGrpcClient<Racing.Racing.RacingClient>(o => o.Address = new Uri("http://localhost:9000"));
 
 var app = builder.Build();
 
@@ -14,14 +14,6 @@ var app = builder.Build();
 
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGrpcService<RacingService>();
-});
+app.UseEndpoints(endpoints => { endpoints.MapGrpcService<RacingService>(); });
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int) (TemperatureC / 0.5556);
-}
