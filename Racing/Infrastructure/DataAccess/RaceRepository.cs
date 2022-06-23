@@ -30,22 +30,48 @@ public class RaceRepository : IRaceRepository, IDisposable
     {
         using var conn = _context.NewConnection();
 
+        // apply filtering
         var (sb, sqlParams) = ApplyFilter(new(Query.For_SelectRaces()),
                                           filter);
 
+        // apply ordering
         (sb, sqlParams) = ApplyOrder(sb,
                                      order,
                                      sqlParams);
 
         conn.Open();
-        var cmd = conn.CreateCommand();
 
+        // sql command
+        var cmd = conn.CreateCommand();
         cmd.CommandText = sb.ToString();
         cmd.Parameters.AddRange(sqlParams);
 
+        // read from db
         var races = ScanRaces(cmd);
 
         return races.AsReadOnly();
+    }
+
+    public Race Get(long id)
+    {
+        using var conn = _context.NewConnection();
+
+        // build simple query with 1 WHERE filter
+        StringBuilder sb = new(Query.For_SelectRaces());
+        sb.Append(" WHERE id = $id");
+
+        // sql command
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = sb.ToString();
+        cmd.Parameters.Add(new SqliteParameter("$id",
+                                               id));
+
+        // leverage existing Scan method
+        var race = ScanRaces(cmd)
+           .FirstOrDefault();
+
+        return race;
     }
 
     /// <summary>
@@ -63,17 +89,20 @@ public class RaceRepository : IRaceRepository, IDisposable
         var clauses = new List<string>();
         var sqlParams = new List<SqliteParameter>();
 
+        // apply meeting ids filtering
         if (filter.MeetingIds.Any())
         {
             var paramNames = new List<string>();
             for (var i = 0; i < filter.MeetingIds.Count; i++)
             {
+                // map the value and sql parameter name for query
                 var pName = $"${i}";
                 paramNames.Add(pName);
                 sqlParams.Add(new SqliteParameter(pName,
                                                   filter.MeetingIds[i]));
             }
 
+            // parameterised sql clause
             clauses.Add($"meeting_id IN ({string.Join(", ", paramNames)})");
         }
 
@@ -83,6 +112,7 @@ public class RaceRepository : IRaceRepository, IDisposable
             clauses.Add("visible = 1");
         }
 
+        // append the filtering to the original query
         if (clauses.Count > 0)
         {
             query.Append($" WHERE {string.Join(" AND ", clauses)}");
@@ -98,8 +128,8 @@ public class RaceRepository : IRaceRepository, IDisposable
     /// <param name="order">The order request</param>
     /// <param name="sqlParameters">The parameters already associated with the request</param>
     /// <returns>The updated query and any parameters associated with the query</returns>
-    private (StringBuilder query, List<SqliteParameter> sqlParams) ApplyOrder(
-        StringBuilder query, ListRacesRequestOrder order, List<SqliteParameter> sqlParameters)
+    private (StringBuilder query, List<SqliteParameter> sqlParams) ApplyOrder(StringBuilder query, ListRacesRequestOrder order,
+                                                                              List<SqliteParameter> sqlParameters)
     {
         if (string.IsNullOrWhiteSpace(order.Field))
             return (query, sqlParameters);
@@ -108,7 +138,9 @@ public class RaceRepository : IRaceRepository, IDisposable
             return (query, sqlParameters);
 
         // get the field we want from a safe list
-        var field = _orderableFields.First(f => string.Equals(f, order.Field, StringComparison.InvariantCultureIgnoreCase));
+        var field = _orderableFields.First(f => string.Equals(f,
+                                                              order.Field,
+                                                              StringComparison.InvariantCultureIgnoreCase));
 
         query.Append($" ORDER BY {field} ASC");
 

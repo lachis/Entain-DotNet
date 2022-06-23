@@ -12,7 +12,12 @@ public class RacingService : Racing.RacingBase
         _raceRepository = raceRepository;
     }
 
-    // ListRaces will return a collection of races.
+    /// <summary>
+    ///  ListRaces will return a collection of races.
+    /// </summary>
+    /// <param name="request">The gRPC request object</param>
+    /// <param name="context">The gRPC request context</param>
+    /// <returns>The gRPC response object containing the race resources</returns>
     public override Task<ListRacesResponse> ListRaces(ListRacesRequest request, ServerCallContext context)
     {
         var response = _raceRepository.List(request.Filter, request.Order);
@@ -26,4 +31,16 @@ public class RacingService : Racing.RacingBase
                                });
     }
 
+    /// <summary>
+    ///  GetRace will return a single race.
+    /// </summary>
+    /// <param name="request">The gRPC request object</param>
+    /// <param name="context">The gRPC request context</param>
+    /// <returns>The race resource</returns>
+    public override Task<Race> GetRace(GetRaceRequest request, ServerCallContext context)
+    {
+        var race = _raceRepository.Get(request.Id);
+
+        return Task.FromResult(race);
+    }
 }

@@ -18,4 +18,11 @@ public class RacingService : Racing.Racing.RacingBase
         return await _client.ListRacesAsync(request,
                                Metadata.Empty);
     }
+
+    // HTTP Service wraps gRPC client which will forward the request to the gRPC Racing service (ie at http://localhost:9000)
+    public override async Task<Race> GetRace(GetRaceRequest request, ServerCallContext context)
+    {
+        return await _client.GetRaceAsync(request,
+                                            Metadata.Empty);
+    }
 }
