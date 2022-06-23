@@ -1,4 +1,5 @@
-﻿using Racing.Infrastructure.DataAccess;
+﻿using FluentAssertions;
+using Racing.Infrastructure.DataAccess;
 using Racing.Infrastructure.Tests.Fixtures;
 
 namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
@@ -23,13 +24,11 @@ public class Basic_Race_Repository_With_Default_Seed_Tests : IClassFixture<DbCon
         var races = raceRepository.List(new ListRacesRequestFilter(), new ListRacesRequestOrder());
 
         // assert
-        Assert.Contains(races,
-                        r => r.MeetingId == 2);
-        Assert.Contains(races,
-                        r => r.MeetingId == 1);
+        races.Should()
+             .Contain(x => x.MeetingId == 1 || x.MeetingId == 2);
 
-        Assert.Equal(100,
-                     races.Count);
+        races.Should()
+             .HaveCount(100);
     }
 
     [Fact]
@@ -48,12 +47,10 @@ public class Basic_Race_Repository_With_Default_Seed_Tests : IClassFixture<DbCon
                                         }, new ListRacesRequestOrder());
 
         // assert
-        Assert.Contains(races,
-                        r => r.MeetingId == 2);
-        Assert.Contains(races,
-                        r => r.MeetingId == 1);
+        races.Should()
+             .Contain(x => x.MeetingId == 1 || x.MeetingId == 2);
 
-        Assert.Equal(100,
-                     races.Count);
+        races.Should()
+             .HaveCount(100);
     }
 }

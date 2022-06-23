@@ -110,12 +110,7 @@ public class RaceRepository : IRaceRepository, IDisposable
         // get the field we want from a safe list
         var field = _orderableFields.First(f => string.Equals(f, order.Field, StringComparison.InvariantCultureIgnoreCase));
 
-        var sqlParamName = "$order";
-
-        sqlParameters.Add(new SqliteParameter(sqlParamName, $"{field} = 1"));
-
-        query.Append(" ORDER BY $order");
-
+        query.Append($" ORDER BY {field} ASC");
 
         return (query, sqlParameters);
     }

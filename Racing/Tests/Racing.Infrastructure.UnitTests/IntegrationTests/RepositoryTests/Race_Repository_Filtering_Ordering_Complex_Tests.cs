@@ -1,66 +1,65 @@
 ﻿using Faker;
+using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Racing.Infrastructure.DataAccess;
 using Racing.Infrastructure.Tests.Contexts;
 
 namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
 
-public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Complex_Tests.TestDbFixture>
+public class Race_Repository_Filtering_Ordering_Complex_Tests : IClassFixture<Race_Repository_Filtering_Ordering_Complex_Tests.TestDbFixture>
 {
     public TestDbFixture Fixture { get; }
 
-    public Race_Repository_Complex_Tests(TestDbFixture fixture)
+    public Race_Repository_Filtering_Ordering_Complex_Tests(TestDbFixture fixture)
     {
         Fixture = fixture;
     }
 
     [Fact]
-    public void Filter_MeetingId_1_3_5_Does_Not_Return_MeetingId_2_4()
+    public void Filter_MeetingId_1_3_5_Does_Not_Return_MeetingId_2_4_And_Is_Ordered_By_StartTime()
     {
         // arrange
         Fixture.DbContext.Seed();
         var raceRepository = new RaceRepository(Fixture.DbContext);
-        var ids = new List<long>
-                  {
-                      1,
-                      3,
-                      5
-                  };
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(3);
         listRacesRequestFilter.MeetingIds.Add(5);
-        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
+
+        var listRacesRequestOrder = new ListRacesRequestOrder
+                                    {
+                                        Field = "advertised_start_time"
+                                    };
+        var races = raceRepository.List(listRacesRequestFilter, listRacesRequestOrder);
 
         // assert
-        Assert.All(races,
-                   r =>
-                   {
-                       var contains = ids.Contains(r.MeetingId);
-                       Assert.True(contains);
-                   });
-        Assert.DoesNotContain(races, r => r.MeetingId == 2);
-        Assert.DoesNotContain(races, r => r.MeetingId == 4);
-        Assert.Contains(races,
-                        r => r.Visible);
-        Assert.Contains(races,
-                        r => !r.Visible);
+        races.Should()
+             .BeInAscendingOrder(x => x.AdvertisedStartTime);
+
+        races.Should()
+             .Contain(x => x.MeetingId == 1 || x.MeetingId == 3 || x.MeetingId == 5);
+       
+        races.Should()
+             .NotContain(x => x.MeetingId == 2);
+
+        races.Should()
+             .NotContain(x => x.MeetingId == 4);
+
+        races.Should()
+             .Contain(x => !x.Visible);
+
+        races.Should()
+             .Contain(x => x.Visible);
     }
 
     [Fact]
-    public void Filter_MeetingId_1_3_5_With_Visible_True_Does_Not_Return_MeetingId_2_4_Or_NonVisible()
+    public void Filter_MeetingId_1_3_5_With_Visible_True_Does_Not_Return_MeetingId_2_4_Or_NonVisible_Returns_OrderedBy_Meeting_Id()
     {
         // arrange
         Fixture.DbContext.Seed();
         var raceRepository = new RaceRepository(Fixture.DbContext);
-        var ids = new List<long>
-                  {
-                      1,
-                      3,
-                      5
-                  };
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
@@ -68,57 +67,55 @@ public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Compl
         listRacesRequestFilter.MeetingIds.Add(3);
         listRacesRequestFilter.MeetingIds.Add(5);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
+        var listRacesRequestOrder = new ListRacesRequestOrder
+                                    {
+                                        Field = "meeting_id"
+                                    };
+        var races = raceRepository.List(listRacesRequestFilter,listRacesRequestOrder);
 
         // assert
-        Assert.All(races,
-                   r =>
-                   {
-                       var contains = ids.Contains(r.MeetingId);
-                       Assert.True(contains);
-                   });
-        Assert.DoesNotContain(races, r => r.MeetingId == 2);
-        Assert.DoesNotContain(races, r => r.MeetingId == 4);
-        Assert.DoesNotContain(races, r => !r.Visible);
+        races.Should()
+             .BeInAscendingOrder(x => x.MeetingId);
+
+        races.Should()
+             .Contain(x => x.MeetingId == 1 || x.MeetingId == 3 || x.MeetingId == 5);
+
+        races.Should()
+             .NotContain(x => x.MeetingId == 2);
+
+        races.Should()
+             .NotContain(x => x.MeetingId == 4);
+
+        races.Should()
+             .NotContain(x => !x.Visible);
     }
 
     [Fact]
-    public void Filter_MeetingIds_6_With_Visible_True_Returns_No_Results()
+    public void Filter_MeetingId_5_With_Visible_True_Only_Returns_MeetingId_5_Visible_And_OrderedBy_Meeting_Id()
     {
         // arrange
         Fixture.DbContext.Seed();
         var raceRepository = new RaceRepository(Fixture.DbContext);
-
+    
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.MeetingIds.Add(6);
+        listRacesRequestFilter.MeetingIds.Add(5);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
+        var listRacesRequestOrder = new ListRacesRequestOrder
+                                    {
+                                        Field = "meeting_id"
+                                    };
+        var races = raceRepository.List(listRacesRequestFilter,listRacesRequestOrder);
 
         // assert
-        Assert.Empty(races);
-    }
+        races.Should()
+             .BeInAscendingOrder(x => x.MeetingId);
 
-    [Fact]
-    public void Filter_MeetingIds_7_With_Visible_False_Only_Returns_Races_With_MeetingId_7_But_Only_Visible_Despite_Filter()
-    {
-        // arrange
-        Fixture.DbContext.Seed();
-        var raceRepository = new RaceRepository(Fixture.DbContext);
-  
-        // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.MeetingIds.Add(7);
-        listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
+        races.Should()
+             .OnlyContain(x => x.Visible);
 
-        // assert
-        Assert.DoesNotContain(races,
-                              r => r.MeetingId != 7);
-
-        Assert.Contains(races,
-                        r => r.Visible);
-        Assert.DoesNotContain(races, r => !r.Visible);
+        races.Should()
+             .OnlyContain(x => x.MeetingId == 5);
     }
 
     public class TestDbFixture : IDisposable
