@@ -1,18 +1,10 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:10053",
-      "sslPort": 44313
-    }
-  },
   "profiles": {
     "Sports": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:9000;https://localhost:9001",
+      "applicationUrl": "http://localhost:7100",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
