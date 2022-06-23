@@ -1,6 +1,6 @@
-﻿using Racing.Infrastructure.UnitTests.Fixtures;
+﻿using Racing.Infrastructure.Tests.Fixtures;
 
-namespace Racing.Infrastructure.UnitTests.DbContextTests;
+namespace Racing.Infrastructure.Tests.IntegrationTests.DbContextTests;
 
 [Collection("Database_Seeding_Cleaning")]
 public class DbContextTests : IClassFixture<DbContextFixture>
@@ -37,8 +37,7 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert
-        Assert.Equal(100,
-                     count);
+        Assert.True(100 == count);
     }
 
     [Fact]
@@ -67,7 +66,7 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert 
-        Assert.Equal(100,
+        Assert.True(100 ==
                      count);
     }
 
@@ -97,7 +96,6 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert 
-        Assert.Equal(0,
-                     count);
+        Assert.True(0 == count);
     }
 }

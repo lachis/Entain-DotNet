@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Contracts;
 using Microsoft.Data.Sqlite;
 
-namespace Racing.Infrastructure.UnitTests.Contexts;
+namespace Racing.Infrastructure.Tests.Contexts;
 
 public abstract class InMemoryTestDbContext : IDbContext
 {
@@ -36,3 +36,5 @@ public abstract class InMemoryTestDbContext : IDbContext
     /// </summary>
     public abstract void Truncate();
 }
+
+

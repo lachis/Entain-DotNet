@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Racing.Infrastructure.DataAccess;
 
-namespace Racing.Infrastructure.UnitTests.Fixtures;
+namespace Racing.Infrastructure.Tests.Fixtures;
 
 public class DbContextFixture : IDisposable
 {
