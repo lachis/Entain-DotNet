@@ -5,104 +5,44 @@ using Racing.Infrastructure.Tests.Contexts;
 
 namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
 
-public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_Repository_Visible_Races_Filtering_Tests.TestDbFixture>
+public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Complex_Tests.TestDbFixture>
 {
     public TestDbFixture Fixture { get; }
 
-    public Race_Repository_Visible_Races_Filtering_Tests(TestDbFixture fixture)
+    public Race_Repository_Complex_Tests(TestDbFixture fixture)
     {
         Fixture = fixture;
     }
 
     [Fact]
-    public void Filter_Visible_Races_True_Returns_Only_Visible_Races()
+    public void Filter_MeetingId_1_3_5_Does_Not_Return_MeetingId_2_4()
     {
         // arrange
         Fixture.DbContext.Seed();
         var raceRepository = new RaceRepository(Fixture.DbContext);
-
-        // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
-
-        // assert
-        Assert.All(races,
-                   r => { Assert.True(r.Visible); });
-
-        Assert.DoesNotContain(races,
-                              r => !r.Visible);
-    }
-
-    [Fact]
-    public void Filter_Visible_Races_False_Returns_Both_Visible_And_Non_Visible_Races()
-    {
-        // arrange
-        Fixture.DbContext.Seed();
-        var raceRepository = new RaceRepository(Fixture.DbContext);
-
-        // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter);
-
-        // assert
-        Assert.True(100 == races.Count);
-
-        Assert.Contains(races,
-                        r => r.Visible);
-        Assert.Contains(races,
-                        r => !r.Visible);
-    }
-
-    [Fact]
-    public void Filter_MeetingId_1_Only_Visible_Races_Returns_Only_Visible_Races_With_MeetingId_24()
-    {
-        // arrange
-        Fixture.DbContext.Seed();
-        var raceRepository = new RaceRepository(Fixture.DbContext);
+        var ids = new List<long>
+                  {
+                      1,
+                      3,
+                      5
+                  };
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
-        listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
-
-        // assert
-        Assert.True(24 == races.Count);
-
-        Assert.All(races,
-                   r =>
-                   {
-                       Assert.Equal(1,
-                                    r.MeetingId);
-                       Assert.True(r.Visible);
-                   });
-    }
-
-    [Fact]
-    public void Filter_MeetingId_1_Only_Visible_Races_False_Returns_Races_With_MeetingId_1_AnyVisibility()
-    {
-        // arrange
-        Fixture.DbContext.Seed();
-        var raceRepository = new RaceRepository(Fixture.DbContext);
-
-        // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.MeetingIds.Add(1);
-        listRacesRequestFilter.OnlyVisibleRaces = false;
+        listRacesRequestFilter.MeetingIds.Add(3);
+        listRacesRequestFilter.MeetingIds.Add(5);
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
         Assert.All(races,
                    r =>
                    {
-                       Assert.Equal(1,
-                                    r.MeetingId);
+                       var contains = ids.Contains(r.MeetingId);
+                       Assert.True(contains);
                    });
-
-        Assert.DoesNotContain(races,
-                              r => r.MeetingId == 2);
+        Assert.DoesNotContain(races, r => r.MeetingId == 2);
+        Assert.DoesNotContain(races, r => r.MeetingId == 4);
         Assert.Contains(races,
                         r => r.Visible);
         Assert.Contains(races,
@@ -110,30 +50,40 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
     }
 
     [Fact]
-    public void Filter_MeetingIds_1_2_Only_Visible_Races_Returns_Races_Matching_MeetingId_1_2_Visible_Only()
+    public void Filter_MeetingId_1_3_5_With_Visible_True_Does_Not_Return_MeetingId_2_4_Or_NonVisible()
     {
         // arrange
         Fixture.DbContext.Seed();
         var raceRepository = new RaceRepository(Fixture.DbContext);
+        var ids = new List<long>
+                  {
+                      1,
+                      3,
+                      5
+                  };
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
-        listRacesRequestFilter.MeetingIds.Add(2);
+        listRacesRequestFilter.MeetingIds.Add(3);
+        listRacesRequestFilter.MeetingIds.Add(5);
         listRacesRequestFilter.OnlyVisibleRaces = true;
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Contains(races,
-                        r => r.MeetingId == 2);
-        Assert.Contains(races,
-                        r => r.MeetingId == 1);
-        Assert.DoesNotContain(races,
-                              r => !r.Visible);
+        Assert.All(races,
+                   r =>
+                   {
+                       var contains = ids.Contains(r.MeetingId);
+                       Assert.True(contains);
+                   });
+        Assert.DoesNotContain(races, r => r.MeetingId == 2);
+        Assert.DoesNotContain(races, r => r.MeetingId == 4);
+        Assert.DoesNotContain(races, r => !r.Visible);
     }
 
     [Fact]
-    public void Filter_MeetingIds_1_2_Only_Visible_Races_False_Returns_100_Races()
+    public void Filter_MeetingIds_6_With_Visible_True_Returns_No_Results()
     {
         // arrange
         Fixture.DbContext.Seed();
@@ -141,41 +91,34 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
 
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.MeetingIds.Add(1);
-        listRacesRequestFilter.MeetingIds.Add(2);
+        listRacesRequestFilter.MeetingIds.Add(6);
+        listRacesRequestFilter.OnlyVisibleRaces = true;
+        var races = raceRepository.List(listRacesRequestFilter);
+
+        // assert
+        Assert.Empty(races);
+    }
+
+    [Fact]
+    public void Filter_MeetingIds_7_With_Visible_False_Only_Returns_Races_With_MeetingId_7_But_Only_Visible_Despite_Filter()
+    {
+        // arrange
+        Fixture.DbContext.Seed();
+        var raceRepository = new RaceRepository(Fixture.DbContext);
+  
+        // act
+        var listRacesRequestFilter = new ListRacesRequestFilter();
+        listRacesRequestFilter.MeetingIds.Add(7);
         listRacesRequestFilter.OnlyVisibleRaces = false;
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Contains(races,
-                        r => r.MeetingId == 2);
-        Assert.Contains(races,
-                        r => r.MeetingId == 1);
-        Assert.Contains(races,
-                              r => !r.Visible);
+        Assert.DoesNotContain(races,
+                              r => r.MeetingId != 7);
+
         Assert.Contains(races,
                         r => r.Visible);
-    }
-
-    [Fact]
-    public void Filter_MeetingIds_1_No_Filter_For_Visible_Returns_50_Races()
-    {
-        // arrange
-        Fixture.DbContext.Seed();
-        var raceRepository = new RaceRepository(Fixture.DbContext);
-
-        // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.MeetingIds.Add(1);
-        var races = raceRepository.List(listRacesRequestFilter);
-
-        // assert
-        Assert.Contains(races,
-                        r => r.MeetingId == 1);
-        Assert.Contains(races,
-                        r => !r.Visible);
-        Assert.Contains(races,
-                        r => r.Visible);
+        Assert.DoesNotContain(races, r => !r.Visible);
     }
 
     public class TestDbFixture : IDisposable
@@ -210,7 +153,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
 
             command.ExecuteScalar();
 
-            for (var i = 0; i < 100; i++)
+            for (var i = 1; i < 1010; i++)
             {
                 var insertCommand = SqlConnection.CreateCommand();
                 insertCommand.CommandText =
@@ -218,40 +161,68 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
                 insertCommand.Parameters.Add(new SqliteParameter("$id",
                                                                  i));
 
-                if (i < 50)
+                if (i <= 200)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
-                                                                     1));
+                                                                     value: 1));
                 }
-                else
+                else if (i <= 400)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
-                                                                     2));
+                                                                     value: 2));
                 }
-
+                else if (i <= 600)
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     value: 3));
+                }
+                else if (i <= 800)
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     value: 4));
+                }
+                else if (i <= 1000)
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     value: 5));
+                }
+                else if (i <= 1005)
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     value: 6));
+                }
+                else 
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$meetingid",
+                                                                     value: 7));
+                }
 
                 insertCommand.Parameters.Add(new SqliteParameter("$name",
                                                                  Name.Last()));
                 insertCommand.Parameters.Add(new SqliteParameter("$number",
                                                                  RandomNumber.Next(1,
                                                                                    12)));
-
-                if (i <= 25)
+                if (i is > 1005 and <= 1010)
+                {
+                    insertCommand.Parameters.Add(new SqliteParameter("$visible",
+                                                                     value: 1));
+                }
+                else if (i >= 1000)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$visible",
                                                                      value: 0));
                 }
-                else if (i is > 25 and <= 50 or > 50 and <= 75)
+                else if (i % 2 == 0)
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$visible",
-                                                                     1));
+                                                                     value: 0));
                 }
                 else
                 {
                     insertCommand.Parameters.Add(new SqliteParameter("$visible",
-                                                                     value: 0));
+                                                                     value: 1));
                 }
-
+             
                 insertCommand.Parameters.Add(new SqliteParameter("$time",
                                                                  DateTime.Now.Add(new TimeSpan(i,
                                                                                                i,

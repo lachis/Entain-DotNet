@@ -4,11 +4,11 @@ using Racing.Infrastructure.Tests.Fixtures;
 namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
 
 [Collection("Database_Seeding_Cleaning")]
-public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFixture>
+public class Basic_Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFixture>
 {
     public DbContextFixture Fixture { get; }
 
-    public Race_Repository_With_Default_Seed_Tests(DbContextFixture fixture)
+    public Basic_Race_Repository_With_Default_Seed_Tests(DbContextFixture fixture)
     {
         Fixture = fixture;
     }
@@ -23,6 +23,11 @@ public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFi
         var races = raceRepository.List(new ListRacesRequestFilter());
 
         // assert
+        Assert.Contains(races,
+                        r => r.MeetingId == 2);
+        Assert.Contains(races,
+                        r => r.MeetingId == 1);
+
         Assert.Equal(100,
                      races.Count);
     }
@@ -43,6 +48,11 @@ public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFi
                                         });
 
         // assert
+        Assert.Contains(races,
+                        r => r.MeetingId == 2);
+        Assert.Contains(races,
+                        r => r.MeetingId == 1);
+
         Assert.Equal(100,
                      races.Count);
     }

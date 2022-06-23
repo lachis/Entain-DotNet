@@ -15,7 +15,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
     }
 
     [Fact]
-    public void Filter_MeetingId_1_Returns_50_Races()
+    public void Filter_MeetingId_1_Returns_Races_Matching_MeetingId_1_Only()
     {
         // arrange
         Fixture.DbContext.Seed();
@@ -27,12 +27,14 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(50,
-                     races.Count);
+       Assert.All(races, r =>
+       {
+           Assert.Equal(1, r.MeetingId);
+       });
     }
 
     [Fact]
-    public void Filter_MeetingId_2_Returns_50_Races()
+    public void Filter_MeetingId_2_Returns_Races_Matching_MeetingId_2_Only()
     {
         // arrange
         Fixture.DbContext.Seed();
@@ -44,8 +46,11 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(50,
-                     races.Count);
+        // assert
+        Assert.All(races, r =>
+        {
+            Assert.Equal(2, r.MeetingId);
+        });
     }
 
     [Fact]
@@ -62,8 +67,13 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         var races = raceRepository.List(listRacesRequestFilter);
 
         // assert
-        Assert.Equal(100,
+        Assert.True(100 ==
                      races.Count);
+
+        Assert.All(races, race =>
+        {
+            Assert.True(race.MeetingId is 1 or 2);
+        });
     }
 
     public class TestDbFixture : IDisposable

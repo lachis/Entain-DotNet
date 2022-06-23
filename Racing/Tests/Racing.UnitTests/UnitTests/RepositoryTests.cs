@@ -17,17 +17,17 @@ public class RepositoryTests
         var stubContext = new Mock<IDbContext>();
         stubContext.Setup(m => m.NewConnection())
                    .Returns(new SqliteConnection());
-        var mockRepo = new Mock<RaceRepository>(args: stubContext.Object,
-                                                behavior: MockBehavior.Strict);
-     
-        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
-                .Returns(RaceList()
-                            .AsReadOnly);
+        var underTest = new Mock<RaceRepository>(args: stubContext.Object,
+                                                 behavior: MockBehavior.Strict);
 
-        var service = new RacingService(mockRepo.Object);
+        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+                 .Returns(RaceList()
+                             .AsReadOnly);
+
+        var service = new RacingService(underTest.Object);
 
         // Act
-        var response = await service.ListRaces(new ListRacesRequest()
+        var response = await service.ListRaces(new ListRacesRequest
                                                {
                                                    Filter = new ListRacesRequestFilter()
                                                },
@@ -35,39 +35,39 @@ public class RepositoryTests
 
 
         // Assert
-        mockRepo.Verify(x=>x.List(new ListRacesRequestFilter()));
+        underTest.Verify(x => x.List(new ListRacesRequestFilter()));
 
-        Assert.Equal(4,
-                     response.Races.Count);
+        Assert.True(response.Races.Count == 4);
     }
 
     [Fact]
     public async Task Repo_List_MeetingId_2_Returns_2_Races()
     {
+        // Arrange
         var stubContext = new Mock<IDbContext>();
         stubContext.Setup(m => m.NewConnection())
                    .Returns(new SqliteConnection());
-        var mockRepo = new Mock<RaceRepository>(args: stubContext.Object,
-                                                behavior: MockBehavior.Loose);
+        var underTest = new Mock<RaceRepository>(args: stubContext.Object,
+                                                 behavior: MockBehavior.Loose);
 
-        mockRepo.Setup(m => m.List(new ListRacesRequestFilter()
-                                   {
-                                       MeetingIds =
-                                       {
-                                           2
-                                       }
-                                   }))
-                .Returns(RaceList()
-                        .Where(x => x.MeetingId == 2)
-                        .ToList()
-                        .AsReadOnly);
+        underTest.Setup(m => m.List(new ListRacesRequestFilter
+                                    {
+                                        MeetingIds =
+                                        {
+                                            2
+                                        }
+                                    }))
+                 .Returns(RaceList()
+                         .Where(x => x.MeetingId == 2)
+                         .ToList()
+                         .AsReadOnly);
 
-        var service = new RacingService(mockRepo.Object);
+        var service = new RacingService(underTest.Object);
 
         // Act
-        var response = await service.ListRaces(new ListRacesRequest()
+        var response = await service.ListRaces(new ListRacesRequest
                                                {
-                                                   Filter = new ListRacesRequestFilter()
+                                                   Filter = new ListRacesRequestFilter
                                                             {
                                                                 MeetingIds =
                                                                 {
@@ -78,16 +78,15 @@ public class RepositoryTests
                                                TestServerCallContext.Create());
 
         // assert
-        mockRepo.Verify(x => x.List(new ListRacesRequestFilter()
-                                    {
-                                        MeetingIds =
-                                        {
-                                            2
-                                        }
-                                    }));
+        underTest.Verify(x => x.List(new ListRacesRequestFilter
+                                     {
+                                         MeetingIds =
+                                         {
+                                             2
+                                         }
+                                     }));
 
-        Assert.Equal(2,
-                     response.Races.Count);
+        Assert.True(response.Races.Count == 2);
     }
 
     [Fact]
@@ -97,21 +96,21 @@ public class RepositoryTests
         var stubContext = new Mock<IDbContext>();
         stubContext.Setup(m => m.NewConnection())
                    .Returns(new SqliteConnection());
-        var mockRepo = new Mock<RaceRepository>(args: stubContext.Object,
-                                                behavior: MockBehavior.Strict);
+        var underTest = new Mock<RaceRepository>(args: stubContext.Object,
+                                                 behavior: MockBehavior.Strict);
 
-        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
-                .Returns(RaceList()
-                        .Where(x => x.Visible)
-                        .ToList()
-                        .AsReadOnly);
+        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+                 .Returns(RaceList()
+                         .Where(x => x.Visible)
+                         .ToList()
+                         .AsReadOnly);
 
-        var service = new RacingService(mockRepo.Object);
+        var service = new RacingService(underTest.Object);
 
         // Act
-        var response = await service.ListRaces(new ListRacesRequest()
+        var response = await service.ListRaces(new ListRacesRequest
                                                {
-                                                   Filter = new ListRacesRequestFilter()
+                                                   Filter = new ListRacesRequestFilter
                                                             {
                                                                 OnlyVisibleRaces = true
                                                             }
@@ -119,29 +118,27 @@ public class RepositoryTests
                                                TestServerCallContext.Create());
 
 
-        bool exceptionCaught = false;
+        var exceptionCaught = false;
         // Assert
-        
+
         // catch the MockException because this Verification will be false as 
         // we are passing OnlyVisibleRaces = true and the assertion is missing that property
         try
         {
-            mockRepo.Verify(x => x.List(new ListRacesRequestFilter()));
+            underTest.Verify(x => x.List(new ListRacesRequestFilter()));
         }
-        catch (Moq.MockException e)
+        catch (MockException e)
         {
             exceptionCaught = true;
         }
 
         Assert.True(exceptionCaught);
-        mockRepo.Verify(x => x.List(
-                                    new ListRacesRequestFilter()
-                                    {
-                                        OnlyVisibleRaces = true
-                                    }));
+        underTest.Verify(x => x.List(new ListRacesRequestFilter
+                                     {
+                                         OnlyVisibleRaces = true
+                                     }));
 
-        Assert.Equal(1,
-                     response.Races.Count);
+        Assert.True(1 == response.Races.Count);
     }
 
     private static List<Race> RaceList()

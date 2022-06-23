@@ -37,8 +37,7 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert
-        Assert.Equal(100,
-                     count);
+        Assert.True(100 == count);
     }
 
     [Fact]
@@ -67,7 +66,7 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert 
-        Assert.Equal(100,
+        Assert.True(100 ==
                      count);
     }
 
@@ -97,7 +96,6 @@ public class DbContextTests : IClassFixture<DbContextFixture>
         }
 
         // assert 
-        Assert.Equal(0,
-                     count);
+        Assert.True(0 == count);
     }
 }
