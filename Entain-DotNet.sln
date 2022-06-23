@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proto", "Proto", "{74F220F3
 	ProjectSection(SolutionItems) = preProject
 		Proto\api-racing.proto = Proto\api-racing.proto
 		Proto\racing.proto = Proto\racing.proto
+		Proto\api-sports.proto = Proto\api-sports.proto
+		Proto\sports.proto = Proto\sports.proto
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "google", "google", "{BA25DA23-BC93-49ED-9B4D-3AF957FB9A1B}"
@@ -39,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{074C5928
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Racing.Infrastructure.Tests", "Racing\Tests\Racing.Infrastructure.UnitTests\Racing.Infrastructure.Tests.csproj", "{4D9672A6-BE38-47AC-A5BC-89A9EED29261}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Racing.Tests", "Racing\Tests\Racing.UnitTests\Racing.Tests.csproj", "{49036E29-8C5D-4F5C-B11A-4DF0D7E7E55E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Racing.Tests", "Racing\Tests\Racing.UnitTests\Racing.Tests.csproj", "{49036E29-8C5D-4F5C-B11A-4DF0D7E7E55E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
