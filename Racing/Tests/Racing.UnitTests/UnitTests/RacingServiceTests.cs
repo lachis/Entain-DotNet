@@ -292,4 +292,57 @@ public class RacingServiceTests
                      .OnlyContain(x => x.Visible);
 
     }
+
+    [Fact]
+    public async Task GetRace_With_Id_1_Returns_Race_Id_1()
+    {
+        // Arrange
+        var mockRepo = new Mock<IRaceRepository>();
+        mockRepo.Setup(m => m.Get(It.IsAny<long>()))
+                .Returns(new Race
+                         {
+                             AdvertisedStartTime = Timestamp.FromDateTime(DateTime.SpecifyKind(new DateTime(2021,
+                                                                                                            01,
+                                                                                                            01),
+                                                                                               DateTimeKind.Utc)),
+                             Id = 1,
+                             MeetingId = 2,
+                             Name = "Test",
+                             Number = 1,
+                             Visible = true
+                         });
+        var service = new RacingService(mockRepo.Object);
+
+        // Act
+        var response = await service.GetRace(new GetRaceRequest()
+                                               {
+                                                   Id = 1
+                                               },
+                                               TestServerCallContext.Create());
+
+        // Assert
+        response.Should()
+                .Match<Race>(x => x.Id == 1);
+    }
+
+    [Fact]
+    public async Task GetRace_With_Id_3001_Returns_Null()
+    {
+        // Arrange
+        var mockRepo = new Mock<IRaceRepository>();
+        mockRepo.Setup(m => m.Get(It.IsAny<long>()))
+                .Returns(() => null);
+        var service = new RacingService(mockRepo.Object);
+
+        // Act
+        var response = await service.GetRace(new GetRaceRequest()
+                                             {
+                                                 Id = 3001
+                                             },
+                                             TestServerCallContext.Create());
+
+        // Assert
+        response.Should()
+                .BeNull();
+    }
 }
