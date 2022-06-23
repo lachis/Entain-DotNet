@@ -10,7 +10,7 @@ service Racing {
   rpc ListRaces(ListRacesRequest) returns (ListRacesResponse) {
    option (google.api.http) = { post: "/v1/list-races", body: "*" };
   }
-   // GetRace will return a single race.
+  // GetRace will return a single race.
   rpc GetRace(GetRaceRequest) returns (Race) {
    option (google.api.http) = { get: "/v1/race/{id}" };
   }
@@ -59,7 +59,7 @@ message Race {
   bool visible = 5;
   // AdvertisedStartTime is the time the race is advertised to run.
   google.protobuf.Timestamp advertised_start_time = 6;
-  // Status = CLOSED indicates if advertised_start_time is in the past. Status = OPEN if advertised_start_time in future
+  // Status = CLOSED indicates if advertised_start_time is in the past. Status = OPEN if advertised_start_time in future.
   string status = 7;
 }
 

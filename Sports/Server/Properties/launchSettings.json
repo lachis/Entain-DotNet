@@ -4,15 +4,15 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54437",
-      "sslPort": 44381
+      "applicationUrl": "http://localhost:10053",
+      "sslPort": 44313
     }
   },
   "profiles": {
-    "API": {
+    "Sports": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:8000;https://localhost:8001",
+      "applicationUrl": "http://localhost:9000;https://localhost:9001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
