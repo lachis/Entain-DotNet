@@ -144,7 +144,8 @@ public class RaceRepository : IRaceRepository, IDisposable
                            Name = name,
                            Number = number,
                            Visible = visible,
-                           MeetingId = meetingId
+                           MeetingId = meetingId,
+                           Status = advertisedStart < DateTime.Now ? "CLOSED" : "OPEN"
                        };
 
             races.Add(race);
