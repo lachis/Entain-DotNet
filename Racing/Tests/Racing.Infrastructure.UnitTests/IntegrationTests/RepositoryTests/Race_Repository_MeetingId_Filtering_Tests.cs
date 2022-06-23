@@ -1,4 +1,5 @@
 ﻿using Faker;
+using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Racing.Infrastructure.DataAccess;
 using Racing.Infrastructure.Tests.Contexts;
@@ -24,13 +25,11 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
-       Assert.All(races, r =>
-       {
-           Assert.Equal(1, r.MeetingId);
-       });
+        races.Should()
+             .OnlyContain(x => x.MeetingId == 1);
     }
 
     [Fact]
@@ -43,14 +42,12 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(2);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         // assert
-        Assert.All(races, r =>
-        {
-            Assert.Equal(2, r.MeetingId);
-        });
+        races.Should()
+             .OnlyContain(x => x.MeetingId == 2);
     }
 
     [Fact]
@@ -64,16 +61,14 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(2);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
-        Assert.True(100 ==
-                     races.Count);
+        races.Should()
+             .HaveCount(100);
 
-        Assert.All(races, race =>
-        {
-            Assert.True(race.MeetingId is 1 or 2);
-        });
+        races.Should()
+             .Contain(x => x.MeetingId == 1 || x.MeetingId == 2);
     }
 
     public class TestDbFixture : IDisposable
@@ -87,7 +82,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
 
         public void Dispose()
         {
-            DbContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public SqliteConnection GetConnection()
