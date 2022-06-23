@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.6" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
     <Protobuf Include="..\..\Proto\racing.proto" GrpcServices="Server" Link="Protos\racing.proto" />
-    <Protobuf Include="..\..\Proto\racing.proto" GrpcServices="Server" Link="Protos\sports.proto" />
+    <Protobuf Include="..\..\Proto\sports.proto" GrpcServices="Server" Link="Protos\sports.proto" />
   </ItemGroup>
 
 </Project>

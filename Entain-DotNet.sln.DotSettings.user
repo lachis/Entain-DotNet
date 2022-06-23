@@ -1,4 +1,13 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1f5ca6ea_002Dbdde_002D4d4f_002D883c_002D657b9d23333f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Racing.Infrastructure.UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\lachl\source\repos\Entain-DotNet\Entain-DotNet" Presentation="&amp;lt;Racing&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9daed978_002Da1cf_002D4ff6_002Db49c_002Dee4211444906/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="C:\Users\lachl\source\repos\Entain-DotNet\Entain-DotNet" Presentation="&amp;lt;Sports&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\lachl\source\repos\Entain-DotNet\Entain-DotNet" Presentation="&amp;lt;Racing&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c754f0c0_002Db457_002D4d1c_002D9d11_002D5bec69842743/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="C:\Users\lachl\source\repos\Entain-DotNet\Entain-DotNet" Presentation="&amp;lt;Sports&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\lachl\source\repos\Entain-DotNet\Entain-DotNet" Presentation="&amp;lt;Racing&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

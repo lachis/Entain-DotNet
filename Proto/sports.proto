@@ -8,7 +8,7 @@ service Sports {
   // ListEvents will return a collection of all events.
   rpc ListEvents(ListEventsRequest) returns (ListEventsResponse) {}
   // GetEvent return a single event.
-  rpc GetEvent(GetEventRequest)) returns (Event) {}
+  rpc GetEvent(GetEventRequest) returns (Event) {}
 }
 
 /* Requests/Responses */
@@ -30,12 +30,11 @@ message ListEventsResponse {
 // Filter for listing events.
 message ListEventsRequestFilter {
 
-    //filter by sport types.
+  //filter by sport types.
   repeated string sport = 1;
 
-  // Filter to return visible only (Note: task only specified being able to retrieve visible = true or getting all
-  // regardless of filter).
-  bool retrieve_visible_only = 2;
+  //filter by visible events
+  bool only_visible_events = 2;
 }
 
 
