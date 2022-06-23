@@ -13,9 +13,9 @@ public class RacingService : Racing.RacingBase
     }
 
     // ListRaces will return a collection of races.
-    public override  Task<ListRacesResponse> ListRaces(ListRacesRequest request, ServerCallContext context)
+    public override Task<ListRacesResponse> ListRaces(ListRacesRequest request, ServerCallContext context)
     {
-        var response = _raceRepository.List(request.Filter);
+        var response = _raceRepository.List(request.Filter, request.Order);
 
         return Task.FromResult(new ListRacesResponse()
                                {
@@ -25,4 +25,5 @@ public class RacingService : Racing.RacingBase
                                    }
                                });
     }
+
 }

@@ -20,7 +20,7 @@ public class Basic_Race_Repository_With_Default_Seed_Tests : IClassFixture<DbCon
         var raceRepository = new RaceRepository(Fixture.DbContext);
 
         // act
-        var races = raceRepository.List(new ListRacesRequestFilter());
+        var races = raceRepository.List(new ListRacesRequestFilter(), new ListRacesRequestOrder());
 
         // assert
         Assert.Contains(races,
@@ -45,7 +45,7 @@ public class Basic_Race_Repository_With_Default_Seed_Tests : IClassFixture<DbCon
                                             {
                                                 Capacity = 0
                                             }
-                                        });
+                                        }, new ListRacesRequestOrder());
 
         // assert
         Assert.Contains(races,

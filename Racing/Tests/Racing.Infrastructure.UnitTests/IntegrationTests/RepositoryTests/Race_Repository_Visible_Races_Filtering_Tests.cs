@@ -22,9 +22,11 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var raceRepository = new RaceRepository(Fixture.DbContext);
 
         // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var listRacesRequestFilter = new ListRacesRequestFilter
+                                     {
+                                         OnlyVisibleRaces = true
+                                     };
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.All(races,
@@ -42,9 +44,11 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var raceRepository = new RaceRepository(Fixture.DbContext);
 
         // act
-        var listRacesRequestFilter = new ListRacesRequestFilter();
-        listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var listRacesRequestFilter = new ListRacesRequestFilter
+                                     {
+                                         OnlyVisibleRaces = false
+                                     };
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.True(100 == races.Count);
@@ -66,7 +70,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.True(24 == races.Count);
@@ -91,7 +95,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.All(races,
@@ -121,7 +125,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(2);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.Contains(races,
@@ -144,7 +148,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(2);
         listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.Contains(races,
@@ -167,7 +171,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.Contains(races,
@@ -189,7 +193,7 @@ public class Race_Repository_Visible_Races_Filtering_Tests : IClassFixture<Race_
 
         public void Dispose()
         {
-            DbContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public SqliteConnection GetConnection()

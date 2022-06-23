@@ -32,7 +32,7 @@ public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Compl
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(3);
         listRacesRequestFilter.MeetingIds.Add(5);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter, new ListRacesRequestOrder());
 
         // assert
         Assert.All(races,
@@ -68,7 +68,7 @@ public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Compl
         listRacesRequestFilter.MeetingIds.Add(3);
         listRacesRequestFilter.MeetingIds.Add(5);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         Assert.All(races,
@@ -93,7 +93,7 @@ public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Compl
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(6);
         listRacesRequestFilter.OnlyVisibleRaces = true;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         Assert.Empty(races);
@@ -110,7 +110,7 @@ public class Race_Repository_Complex_Tests : IClassFixture<Race_Repository_Compl
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(7);
         listRacesRequestFilter.OnlyVisibleRaces = false;
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         Assert.DoesNotContain(races,

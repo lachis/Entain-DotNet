@@ -20,7 +20,7 @@ public class RepositoryTests
         var underTest = new Mock<RaceRepository>(args: stubContext.Object,
                                                  behavior: MockBehavior.Strict);
 
-        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>(), new ListRacesRequestOrder()))
                  .Returns(RaceList()
                              .AsReadOnly);
 
@@ -29,13 +29,14 @@ public class RepositoryTests
         // Act
         var response = await service.ListRaces(new ListRacesRequest
                                                {
-                                                   Filter = new ListRacesRequestFilter()
+                                                   Filter = new ListRacesRequestFilter(),
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 
 
         // Assert
-        underTest.Verify(x => x.List(new ListRacesRequestFilter()));
+        underTest.Verify(x => x.List(new ListRacesRequestFilter(), new ListRacesRequestOrder()));
 
         Assert.True(response.Races.Count == 4);
     }
@@ -56,7 +57,7 @@ public class RepositoryTests
                                         {
                                             2
                                         }
-                                    }))
+                                    }, new ListRacesRequestOrder()))
                  .Returns(RaceList()
                          .Where(x => x.MeetingId == 2)
                          .ToList()
@@ -73,7 +74,8 @@ public class RepositoryTests
                                                                 {
                                                                     2
                                                                 }
-                                                            }
+                                                            },
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 
@@ -84,7 +86,7 @@ public class RepositoryTests
                                          {
                                              2
                                          }
-                                     }));
+                                     }, new ListRacesRequestOrder()));
 
         Assert.True(response.Races.Count == 2);
     }
@@ -99,7 +101,7 @@ public class RepositoryTests
         var underTest = new Mock<RaceRepository>(args: stubContext.Object,
                                                  behavior: MockBehavior.Strict);
 
-        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+        underTest.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>(), new ListRacesRequestOrder()))
                  .Returns(RaceList()
                          .Where(x => x.Visible)
                          .ToList()
@@ -113,7 +115,8 @@ public class RepositoryTests
                                                    Filter = new ListRacesRequestFilter
                                                             {
                                                                 OnlyVisibleRaces = true
-                                                            }
+                                                            },
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 
@@ -125,7 +128,7 @@ public class RepositoryTests
         // we are passing OnlyVisibleRaces = true and the assertion is missing that property
         try
         {
-            underTest.Verify(x => x.List(new ListRacesRequestFilter()));
+            underTest.Verify(x => x.List(new ListRacesRequestFilter(), new ListRacesRequestOrder()));
         }
         catch (MockException e)
         {
@@ -136,7 +139,7 @@ public class RepositoryTests
         underTest.Verify(x => x.List(new ListRacesRequestFilter
                                      {
                                          OnlyVisibleRaces = true
-                                     }));
+                                     }, new ListRacesRequestOrder()));
 
         Assert.True(1 == response.Races.Count);
     }

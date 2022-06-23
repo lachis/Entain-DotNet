@@ -13,7 +13,7 @@ public class RacingServiceTests
     {
         // Arrange
         var mockRepo = new Mock<IRaceRepository>();
-        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>(), new ListRacesRequestOrder()))
                 .Returns(new List<Race>
                          {
                              new Race
@@ -46,7 +46,8 @@ public class RacingServiceTests
         // Act
         var response = await service.ListRaces(new ListRacesRequest
                                                {
-                                                   Filter = new ListRacesRequestFilter()
+                                                   Filter = new ListRacesRequestFilter(),
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 
@@ -65,7 +66,7 @@ public class RacingServiceTests
     {
         // Arrange
         var mockRepo = new Mock<IRaceRepository>();
-        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>(), new ListRacesRequestOrder()))
                 .Returns(new List<Race>
                          {
                              new Race
@@ -128,7 +129,8 @@ public class RacingServiceTests
                                                                 {
                                                                     2
                                                                 }
-                                                            }
+                                                            },
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 
@@ -153,7 +155,7 @@ public class RacingServiceTests
     {
         // Arrange
         var mockRepo = new Mock<IRaceRepository>();
-        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>()))
+        mockRepo.Setup(m => m.List(It.IsAny<ListRacesRequestFilter>(), new ListRacesRequestOrder()))
                 .Returns(new List<Race>
                          {
                              new Race
@@ -189,7 +191,8 @@ public class RacingServiceTests
                                                    Filter = new ListRacesRequestFilter
                                                             {
                                                                 OnlyVisibleRaces = true
-                                                            }
+                                                            },
+                                                   Order = new ListRacesRequestOrder()
                                                },
                                                TestServerCallContext.Create());
 

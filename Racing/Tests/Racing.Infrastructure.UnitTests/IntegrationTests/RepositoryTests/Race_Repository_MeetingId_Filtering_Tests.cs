@@ -24,7 +24,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
        Assert.All(races, r =>
@@ -43,7 +43,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         // act
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(2);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         // assert
@@ -64,7 +64,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
         var listRacesRequestFilter = new ListRacesRequestFilter();
         listRacesRequestFilter.MeetingIds.Add(1);
         listRacesRequestFilter.MeetingIds.Add(2);
-        var races = raceRepository.List(listRacesRequestFilter);
+        var races = raceRepository.List(listRacesRequestFilter,new ListRacesRequestOrder());
 
         // assert
         Assert.True(100 ==
@@ -87,7 +87,7 @@ public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repo
 
         public void Dispose()
         {
-            DbContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public SqliteConnection GetConnection()
