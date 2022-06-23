@@ -72,3 +72,4 @@ curl -X "GET" "http://localhost:8000/v1/event/1"
 2. All PRs have been merged, the master branch contains the whole solution due to the structural differences between some of the Pull Requests
 3. The DbContext implementation uses a bare bones ADO.NET implementation where I could have used something like Dapper. This was to make it as close to the original go implementation as possible
 4. This DbContext uses synchronous APIs due to the issues Microsoft identifies around the async APIs and this library. They recommend NOT to use async with SQLLITE3
+5. I use inheritdoc on concrete implementations so some of the documentation is on the interfaces
