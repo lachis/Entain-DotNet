@@ -1,6 +1,6 @@
-﻿using Racing.Infrastructure.UnitTests.Fixtures;
+﻿using Racing.Infrastructure.Tests.Fixtures;
 
-namespace Racing.Infrastructure.UnitTests.DbContextTests;
+namespace Racing.Infrastructure.Tests.IntegrationTests.DbContextTests;
 
 [Collection("Database_Seeding_Cleaning")]
 public class DbContextTests : IClassFixture<DbContextFixture>

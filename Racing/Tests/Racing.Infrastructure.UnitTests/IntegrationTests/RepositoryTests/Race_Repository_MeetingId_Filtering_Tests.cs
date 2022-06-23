@@ -1,9 +1,9 @@
 ﻿using Faker;
 using Microsoft.Data.Sqlite;
 using Racing.Infrastructure.DataAccess;
-using Racing.Infrastructure.UnitTests.Contexts;
+using Racing.Infrastructure.Tests.Contexts;
 
-namespace Racing.Infrastructure.UnitTests.RepositoryTests;
+namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
 
 public class Race_Repository_MeetingId_Filtering_Tests : IClassFixture<Race_Repository_MeetingId_Filtering_Tests.TestDbFixture>
 {

@@ -1,7 +1,7 @@
 ﻿using Racing.Infrastructure.DataAccess;
-using Racing.Infrastructure.UnitTests.Fixtures;
+using Racing.Infrastructure.Tests.Fixtures;
 
-namespace Racing.Infrastructure.UnitTests.RepositoryTests;
+namespace Racing.Infrastructure.Tests.IntegrationTests.RepositoryTests;
 
 [Collection("Database_Seeding_Cleaning")]
 public class Race_Repository_With_Default_Seed_Tests : IClassFixture<DbContextFixture>

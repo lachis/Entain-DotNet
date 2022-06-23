@@ -21,7 +21,7 @@ public class RaceRepository : IRaceRepository, IDisposable
         _context.Dispose();
     }
 
-    public IReadOnlyCollection<Race> List(ListRacesRequestFilter filter)
+    public virtual IReadOnlyCollection<Race> List(ListRacesRequestFilter filter)
     {
         using var conn = _context.NewConnection();
 
@@ -34,6 +34,18 @@ public class RaceRepository : IRaceRepository, IDisposable
         cmd.CommandText = sb.ToString();
         cmd.Parameters.AddRange(sqlParams);
 
+        var races = ScanRaces(cmd);
+
+        return races.AsReadOnly();
+    }
+
+    /// <summary>
+    /// Opens the reader to the database and executes the query
+    /// </summary>
+    /// <param name="cmd">The SQL command to run</param>
+    /// <returns>A list of matching Races</returns>
+    protected virtual List<Race> ScanRaces(SqliteCommand cmd)
+    {
         var races = new List<Race>();
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
@@ -62,8 +74,7 @@ public class RaceRepository : IRaceRepository, IDisposable
             races.Add(race);
         }
 
-
-        return races.AsReadOnly();
+        return races;
     }
 
     /// <summary>
