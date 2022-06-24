@@ -15,7 +15,7 @@ var app = builder.Build();
 
 app.UseRouting();
 
-//app.UseEndpoints(endpoints => { endpoints.MapGrpcService<RacingService>(); });
+app.UseEndpoints(endpoints => { endpoints.MapGrpcService<RacingService>(); });
 app.UseEndpoints(endpoints => { endpoints.MapGrpcService<SportsService>(); });
 
 app.Run();
